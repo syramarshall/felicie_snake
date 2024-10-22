@@ -380,7 +380,7 @@
 
       <div id="text-con">
         <h2 id="c-char">Felicie:</h2>
-        <h3 id="text">Luca! You are so dumb!</h3>
+        <h3 id="text">You're so dumb.</h3>
       </div>
 
       <div id="alt-box">
@@ -503,19 +503,41 @@
           "conversations": [
             [
               "Felicie",
-              "Luca! You are so dumb!"],
-
+              "You're so dumb." ],
             [
               "Luca",
-              "...Okay?"],
-
+              "Am not!" ],
             [
               "Felicie",
-              " Good Luca! And remember, tu as la QI d'une huître!"],
-
+              "Am so. Tu as le QI d'une huître." ],
             [
               "Luca",
-              "Right..."]]
+              "No, you're tu as le QI d'une huître. You're an oyster!<br><br>Regret not going to your Christmas party now?" ],
+            [
+              "Felicie",
+              "No, the turkey and potatoes here are delicious." ],
+            [
+              "Luca",
+              "Okay dude, bone apple tea!" ],
+            [
+              "Felicie",
+              "It's bon appetit. You're so dumb omg." ],
+            [
+              "Luca",
+              "But you love meeeee" ],
+            [
+              "Felicie",
+              "Yeah...<br><br>You wish ❤️" ],
+            [
+              "Luca",
+              "Wow. I miss Felicie so much. It's almost like I can still hear her voice." ],
+            [
+              "Felicie",
+              "I'm haunting the narrative..." ],
+            [
+              "Felicie",
+              "Boo!" ],
+          ]
         };
 
         currentCodec = codec['Start Tutorial']['conversations'];
@@ -554,13 +576,13 @@
         // if length is max > next click will be 'end transmission'
         //console.log(currentCodec);
         if (currentCodec[count] !== undefined) {
+
           document.querySelector('#text').innerHTML = currentCodec[count][1];
 
           $('#c-char').text(currentCodec[count][0] + ':');
           endFunc = false;
           $('#char-1').css('background-image', 'url(images/feli.jpg)');
           $('#char-2').css('background-image', 'url(images/luca.jpg)');
-          console.log("Current count: " + count);
         }
         else {
           endFunc = true;
