@@ -1,13 +1,12 @@
 <html lang="en">
 
 <head>
-  <title>Feli meets Snake</title>
+  <title>Metal Gear Solid - Feli and Luca</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700" rel="stylesheet">
-  <link href="Style/MainCSS.css" rel="stylesheet">
   <style>
     html,
     body {
@@ -31,7 +30,7 @@
     }
 
     #main-con {
-      height: 100%;
+      height: 300px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -147,7 +146,7 @@
       height: 100%;
       margin: 20px;
       border: 2px solid #03FB8D;
-      background-image: url('../Images/static.gif');
+      background-image: url('images/static.gif');
       background-size: cover;
       min-width: 180px;
     }
@@ -332,8 +331,7 @@
     <div id="mCodec">
       <div id="main-con">
         <div id="contact_1" class="grid-box codec-col">
-          <div id="char-1" class="char-box"
-            style="background-image: url(&quot;https://static.wikia.nocookie.net/metalgear/images/3/36/Hal_Emmerich.jpg/revision/latest?cb=20060926152439&quot;);">
+          <div id="char-1" class="char-box" style="background-image: url(images/feli.jpg);">
             <div class="overlay">
             </div>
           </div>
@@ -345,7 +343,7 @@
 
           <div id="r_box">
             <div id="left" class="arrow">
-              <i class="fa fa-caret-left caret" aria-hidden="true"></i>
+              <i id="left-i" class="fa fa-caret-left caret" aria-hidden="true"></i>
             </div>
             <div id="receiver-box">
               <div id="bars-con">
@@ -364,7 +362,7 @@
               </div>
             </div>
             <div id="right" class="arrow">
-              <i class="fa fa-caret-right caret" aria-hidden="true"></i>
+              <i id="right-i" class="fa fa-caret-right caret" aria-hidden="true"></i>
             </div>
           </div>
 
@@ -373,8 +371,7 @@
           </div>
         </div>
         <div id="contact_2" class="grid-box codec-col">
-          <div id="char-2" class="char-box"
-            style="background-image: url(&quot;https://static.wikia.nocookie.net/metalgear/images/6/60/Solid_Snake%27s_sneaking_Suit.jpg/revision/latest?cb=20100131174520&quot;);">
+          <div id="char-2" class="char-box" style="background-image: url(images/luca.jpg);">
             <div class="overlay">
             </div>
           </div>
@@ -382,23 +379,24 @@
       </div>
 
       <div id="text-con">
-        <h2 id="c-char">Otacon:</h2>
-        <h3 id="text">Snake! This is your first time using the Codec system. Let me explain to you how it works. First, to
-          continue this conversation, click within this box!</h3>
+        <h2 id="c-char">Felicie:</h2>
+        <h3 id="text">Luca! You are so dumb!</h3>
       </div>
 
       <div id="alt-box">
         <div id="left_2" class="left arrow">
-          <i class="fa fa-caret-left caret" aria-hidden="true"></i>
+          <i id="left_2-i" class="fa fa-caret-left caret" aria-hidden="true"></i>
         </div>
         <div class="freq-con">
           <h2 id="freq_2" class="freq">140.15</h2>
         </div>
         <div id="right_2" class="right arrow">
-          <i class="fa fa-caret-right caret" aria-hidden="true"></i>
+          <i id="right_2-i" class="fa fa-caret-right caret" aria-hidden="true"></i>
         </div>
       </div>
     </div>
+    <div id="dummy-div"></div>
+    <div id="dummy-div_2"></div>
     <script id="rendered-js">
       // MGS1 = 15512
       // MGS2 = 11471
@@ -413,12 +411,11 @@
       var iniWidth = 100;
       var barWidth = $('#bars-con').children();
       for (var increaseWidth = 1; increaseWidth < barWidth.length + 1; increaseWidth++) {
-        if (window.CP.shouldStopExecution(0)) break;
         $('#bars-con').children().eq(increaseWidth - 1).css('width', 10 * (barWidth.length - increaseWidth + 1) + '%');
       }
 
       // To create the 'bar' color changing effect
-      window.CP.exitedLoop(0); var bSignal = barWidth.length;
+      var bSignal = barWidth.length;
       var signalCount = bSignal;
       var dBar = true;
       var endFunc = false;
@@ -483,300 +480,130 @@
         }
       };
 
+      var codec = {};
+      var characters = [];
+      var cImages;
 
+      // Change the freq header innerHTML to first index of the frequencies array in the games object
 
-      $.ajax('https://metalgear.wikia.com/api.php?format=json&action=query&prop=revisions&rvprop=content&pageids=' + currentGame + '&rvparse=1', { // Add &rvparse=1 for html response
-        dataType: 'jsonp'
-      }).
-        done(function (data) {
-          //console.log(data);
-          /* How codec(s) should be stored
-            var codec = {
-            'Snake finds food': {
-              characters = ['Snake', 'Major', 'Para-Medic']
-              conversations = [
-                ['Major', 'Snake, did you find food? '],
-                ['Snake', 'Yeah.' ],
-                ['Para-Medic', 'You sound happy.'],
-              ]
-            }
-            } */
+      var freqCount = 0;
+      function currentFreq(freq) {
+        //document.querySelector('.freq').innerHTML = freq
+        $('.freq').text(freq);
+      }
 
+      currentFreq(games[currentGame]['frequencies'][freqCount]);
 
+      function startTut() {
+        codec['Start Tutorial'] = {
+          "characters": [
+            "Felicie",
+            "Luca"],
 
-          var codec = {};
-          var characters = [];
-          var cImages;
+          "conversations": [
+            [
+              "Felicie",
+              "Luca! You are so dumb!"],
 
-          // Change the freq header innerHTML to first index of the frequencies array in the games object
+            [
+              "Luca",
+              "...Okay?"],
 
-          var freqCount = 0;
-          function currentFreq(freq) {
-            //document.querySelector('.freq').innerHTML = freq
-            $('.freq').text(freq);
+            [
+              "Felicie",
+              " Good Luca! And remember, tu as la QI d'une huître!"],
+
+            [
+              "Luca",
+              "Right..."]]
+        };
+
+        currentCodec = codec['Start Tutorial']['conversations'];
+      };
+
+      startTut();
+
+      var count = 0;
+      function currentConversation(click) {
+        //if (Object.values(click)[0] === true) {
+        if (typeof click === 'object') {
+          var srcId = click.srcElement.id;
+          if (srcId == "right" || srcId == "right-i" || srcId == "right2" || srcId == "right2-i" || srcId === 'text-con') {
+              count++;
           }
+          else if (srcId == 'left' || srcId == 'left-i' || srcId == 'left2' || srcId == 'left2-i') {
+              count--;
+          }
+          else {
+            console.log(click);
+            console.log(click.srcElement);
+            count = 0;
+          }
+        }
+        else {
+          count = 0;
+        }
 
+        if (count < 0) {
+          count = 0;
+        }
+        else if (count > currentCodec.length) {
+          count = currentCodec.length;
+        }
+
+        // if length is max > next click will be 'end transmission'
+        //console.log(currentCodec);
+        if (currentCodec[count] !== undefined) {
+          document.querySelector('#text').innerHTML = currentCodec[count][1];
+
+          $('#c-char').text(currentCodec[count][0] + ':');
+          endFunc = false;
+          $('#char-1').css('background-image', 'url(images/feli.jpg)');
+          $('#char-2').css('background-image', 'url(images/luca.jpg)');
+          console.log("Current count: " + count);
+        }
+        else {
+          endFunc = true;
+          document.querySelector('#text').innerHTML = '*END TRANSMISSION*';
+          $('#c-char').text('');
+          $('.char-box').css('background-image', 'url(images/static.gif)');
+        }
+      };
+
+      document.querySelector('#text-con').addEventListener('click', currentConversation);
+      document.querySelector('#left').addEventListener('click', currentConversation);
+      document.querySelector('#right').addEventListener('click', currentConversation);
+
+      /* For when the arrow(s) are clicked */
+      function changeFreq() {
+        var id = this.getAttribute("id");
+        endFunc = false;
+        barSignal();
+        if (id === 'right' || 'right_2' || 'right-i' || 'right_2-i') {
+          // If reached max freq index
+          if (freqCount === games[currentGame]['frequencies'].length - 1) {
+            freqCount = 0;
+          } else {
+            freqCount++;
+          }
           currentFreq(games[currentGame]['frequencies'][freqCount]);
-
-
-          // Get the text
-          var text = data.query.pages[Object.keys(data.query.pages)[0]].revisions[0]['*'];
-
-          // Get all headers
-          /* Headers are within three equal signs '=== Snake finds food ==='
-            I should get the first occurrence, and the second, then repeat
-          */
-          var dDiv = document.querySelector('#dummy-div');
-          dDiv.innerHTML = text;
-
-          var headers = dDiv.querySelectorAll('h3');
-          var topics = [];
-
-          // Get all the <i> tags
-          var iRobot = dDiv.querySelectorAll('i');
-          // Removes those <i> tags that contain a specific string
-          for (var d = 0; d < iRobot.length; d++) {
-            if (window.CP.shouldStopExecution(1)) break;
-            //if (iRobot[d].textContent.includes('To initiate this conversation') === true || iRobot[d].textContent.includes('To unlock this conversation') === true || iRobot[d].textContent.includes('To obtain this conversation') === true) { // Make this smaller [[In order to access this conversation
-            iRobot[d].parentNode.removeChild(iRobot[d]); // Removes ALL <i> tags, while the if statement (commented out) will remove only <i> with selected text in it 
-            //}
+        } else {
+          // as above, so below
+          if (freqCount === 0) {
+            freqCount = games[currentGame]['frequencies'].length - 1;
+          } else {
+            freqCount--;
           }
+          currentFreq(games[currentGame]['frequencies'][freqCount]);
+        }
 
-          // Get all the <h4> tags
-          window.CP.exitedLoop(1); var theH4ters = dDiv.querySelectorAll('h4');
-
-          // Removes those <h4> tags, and <p> tags (if they are directly after the <h4>
-          for (var h = 0; h < theH4ters.length; h++) {
-            if (window.CP.shouldStopExecution(2)) break;
-            if (theH4ters[h].nextElementSibling.nodeName === 'p') {
-              theH4ters[h].nextElementSibling.parentNode.removeChild(theH4ters[h].nextElementSibling);
-            };
-            theH4ters[h].parentNode.removeChild(theH4ters[h]);
-          }
-
-          // Removes those <h2> tags
-          window.CP.exitedLoop(2); $('#dummy-div').find('h2').remove();
-
-
-          // Get all the 'headers' (Conversation topics)
-          for (var i = 0; i < headers.length; i++) {
-            if (window.CP.shouldStopExecution(3)) break;
-            var x = headers[i].querySelectorAll('span')[0].innerHTML;
-            topics.push(x);
-            codec[x] = { 'characters': [], 'conversations': [] };
-
-            var headerConvo = $(headers[i]).nextUntil(headers[i + 1]);
-            for (var m = 0; m < headerConvo.length; m++) {
-              if (window.CP.shouldStopExecution(4)) break;
-              //codec[x]['conversations'].push(headerConvo[m].innerHTML)
-
-              // Get characters within <b> tags
-              if (headerConvo[m].querySelectorAll('b').length > 0) {
-                var chars = headerConvo[m].querySelectorAll('b');
-                // Get all the characters
-                var b = headerConvo[m].querySelectorAll('b')[0].innerHTML.replace(/[$/:-?{-~!"^_`'\[\]]/g, '');
-                // Remove space at the end of the string
-                if (b[b.length - 1] == ' ') {
-                  b = b.slice(0, -1);
-                }
-
-                if (characters.includes(b) !== true) {// Check what to parse and make a comment for it
-                  characters.push(b);
-                }
-              }
-
-              if (headerConvo[m].querySelectorAll('b').length > 0) {
-                // Does it have <b> as a child?
-                try {
-                  var convo = headerConvo[m].removeChild(headerConvo[m].querySelectorAll('b')[0]);
-                }
-                catch (error) {
-                  //console.log('Could not find <b>!');
-                }
-                //console.log(convo);
-              }
-
-              if (headerConvo[m].textContent.replace(/\r?\n|\r/g, '') !== '') {
-
-                for (var cLen = 0; cLen < characters.length; cLen++) {
-                  if (window.CP.shouldStopExecution(5)) break; // Takes out words like ('Snake:') to improve parsing
-                  headerConvo[m].textContent = headerConvo[m].textContent.replace(characters[cLen] + ':', '');
-                } window.CP.exitedLoop(5);
-
-                headerConvo[m].textContent = headerConvo[m].textContent.replace(':', '');
-
-                codec[x]['conversations'].push([b, headerConvo[m].textContent.replace(/\r?\n|\r/g, '')]); // Character
-
-                if (codec[x]['characters'].indexOf(b) === -1) {
-                  codec[x]['characters'].push(b);
-                };
-              }
-            } window.CP.exitedLoop(4);
-            $('#dummy-div').remove();
-
-          } window.CP.exitedLoop(3);
-
-          function startTut() {
-            codec['Start Tutorial'] = {
-              "characters": [
-                "Otacon",
-                "Snake"],
-
-              "conversations": [
-                [
-                  "Otacon",
-                  "Snake! This is your first time using the Codec system. Let me explain to you how it works. First, to continue this conversation, click within this box!"],
-
-                [
-                  "Snake",
-                  "...Okay?"],
-
-                [
-                  "Otacon",
-                  " Good Snake! Now, if you want to initiate another conversation, click the green arrows. Note, these arrows may be either above this box or below, depending on your screen size!"],
-
-                [
-                  "Snake",
-                  "Right..."]]
-            };
-
-            currentCodec = codec['Start Tutorial']['conversations'];
-          };
-
-          startTut();
-
-          var count = 0;
-          function currentConversation(click, manual = false) {
-            //if (Object.values(click)[0] === true) {
-            if (typeof click === 'object') {
-              if (count !== currentCodec.length) {
-                count++;
-              }
-            } else {
-              count = 0;
-            }
-            // if length is max > next click will be 'end transmission'
-            //console.log(currentCodec);
-            if (currentCodec[count] !== undefined && manual === false) {
-              document.querySelector('#text').innerHTML = currentCodec[count][1];
-              if (currentCodec[count][0].indexOf('Snake') === -1) {
-                $('#char-1').css('background-image', 'url(' + cImages[currentCodec[count][0]].image + ')');
-              }
-
-              $('#c-char').text(currentCodec[count][0] + ':');
-              $('#char-2').css('background-image', 'url(' + cImages['Snake'].image + ')');
-            } else if (manual !== false) {
-              document.querySelector('#text').innerHTML = codec['Start Tutorial']['conversations'][count][1]; //currentCodec[count][1];
-              if (codec['Start Tutorial']['conversations'][count][0].indexOf('Snake') === -1) {
-                $('#char-1').css('background-image', 'url(' + cImages[codec['Start Tutorial']['conversations'][count][0]].image + ')');
-              }
-
-              $('#c-char').text(codec['Start Tutorial']['conversations'][count][0] + ':');
-              $('#char-2').css('background-image', 'url(' + cImages['Snake'].image + ')');
-            } else {
-              endFunc = true;
-              document.querySelector('#text').innerHTML = '*END TRANSMISSION*';
-              $('#c-char').text('');
-              $('.char-box').css('background-image', 'url("https://raw.githubusercontent.com/TylerJCodes/MGS-Codec/master/Images/static.gif")');
-            }
-          };
-
-          document.querySelector('#text-con').addEventListener('click', currentConversation);
-
-          /* For when the arrow(s) are clicked */
-          function changeFreq() {
-            var id = this.getAttribute("id");
-            endFunc = false;
-            barSignal();
-            if (id === 'right' || 'right_2') {
-              // If reached max freq index
-              if (freqCount === games[currentGame]['frequencies'].length - 1) {
-                freqCount = 0;
-              } else {
-                freqCount++;
-              }
-              currentFreq(games[currentGame]['frequencies'][freqCount]);
-            } else {
-              // as above, so below
-              if (freqCount === 0) {
-                freqCount = games[currentGame]['frequencies'].length - 1;
-              } else {
-                freqCount--;
-              }
-              currentFreq(games[currentGame]['frequencies'][freqCount]);
-            }
-
-            // get random codec conversation from codec object
-            var codecL = Object.keys(codec);
-            var rNum = Math.floor(Math.random() * (codecL.length - 0) + 0);
-            currentCodec = codec[codecL[rNum]]['conversations'];
-            currentConversation(false);
-          }
-
-          //console.log(codec);
-          // Get the character image(s)
-          function getImages(id) {
-            $.ajax('https://metalgear.wikia.com/api.php?format=json&action=query&prop=revisions&rvprop=content&pageids=' + id + '&rvparse=1', { // Add &rvparse=1 for html response
-              dataType: 'jsonp'
-            }).
-              done(function (nData) {
-                //console.log(nData);
-                var text2 = nData.query.pages[Object.keys(nData.query.pages)[0]].revisions[0]['*'];
-                var dDiv2 = document.querySelector('#dummy-div_2');
-                dDiv2.innerHTML = text2;
-                var characterImages = {};
-
-                // lightbox-caption div contains the name(s) of the images
-                $('.lightbox-caption').each(function () {
-                  var linkOf = $(this).siblings('.thumb').find('img').attr('data-src');
-                  linkOf = linkOf.replace('/scale-to-width-down/', '');
-                  var x1 = linkOf.lastIndexOf('latest'); var x2 = linkOf.lastIndexOf('?');
-                  linkOf = linkOf.substring(0, x1 + 'latest'.length) + linkOf.substring(x2, linkOf.length);
-
-                  //console.log($(this).children('a').text());
-                  if (characters.indexOf($(this).children('a').text()) > -1) {
-                    characterImages[characters[characters.indexOf($(this).children('a').text())]] = { 'image': linkOf };
-                    if ($(this).children('a').text() === 'Solid Snake') {
-                      characterImages['Snake'] = { 'image': linkOf };
-                    } else if ($(this).children('a').text() === 'Roy Campbell') {
-                      characterImages['Campbell'] = { 'image': linkOf };
-                    } else if ($(this).children('a').text() === 'Nastasha Romanenko') {
-                      characterImages['Nastasha Romenanko'] = { 'image': linkOf };
-                      characterImages['Nastaha Romanenko'] = { 'image': linkOf };
-                      characterImages['Nastasha Romenenko'] = { 'image': linkOf };
-                    } else if ($(this).children('a').text() === 'Naomi Hunter') {
-                      characterImages['Naomi'] = { 'image': linkOf };
-                    };
-                  } else {
-                    //console.log('Couldn\'t find ' + $(this).children('a').text() + '!');
-                    if ($(this).children('a').text() === 'Hal Emmerich') {
-                      characterImages['Otacon'] = { 'image': linkOf };
-                    }
-
-                    if (characters.indexOf($(this).children('a').text().split(' ')[0]) > -1) {
-                      characterImages[characters[characters.indexOf($(this).children('a').text().split(' ')[0])]] = { 'image': linkOf };
-                    };
-                  }
-                });
-
-                //console.log(characterImages);
-
-                var arrows = document.querySelectorAll('.arrow');
-                for (var addEvent = 0; addEvent < arrows.length; addEvent++) {
-                  if (window.CP.shouldStopExecution(6)) break;
-                  arrows[addEvent].addEventListener('click', changeFreq);
-                } window.CP.exitedLoop(6);
-
-                cImages = characterImages;
-                currentConversation(true, true);
-
-                $('#dummy-div_2').remove();
-              });
-          };
-
-          getImages(games[currentGame].gallery);
-          //console.log(characters);
-        });
+        // get random codec conversation from codec object
+        var codecL = Object.keys(codec);
+        var rNum = Math.floor(Math.random() * (codecL.length - 0) + 0);
+        currentCodec = codec[codecL[rNum]]['conversations'];
+        currentConversation(false);
+      }
+      //console.log(characters);
       //# sourceURL=pen.js
     </script>
   </body>
